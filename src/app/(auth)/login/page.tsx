@@ -1,5 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import Link from "next/link";
+
 export default function Login() {
   return (
     <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
@@ -17,7 +19,9 @@ export default function Login() {
           <div className="py-4">
             <p className="text-neutral-500">
               Don&apos;t have an account?{" "}
-              <span className="text-sky-600">Register</span>
+              <Link className="text-sky-600" href="/register">
+                Register
+              </Link>
             </p>
           </div>
         </div>
