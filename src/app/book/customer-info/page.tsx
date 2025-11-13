@@ -34,7 +34,7 @@ const formDefinitions = [
   },
 ];
 
-export default function Login() {
+export default function CustomerInfo() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
