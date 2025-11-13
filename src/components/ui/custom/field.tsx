@@ -38,8 +38,14 @@ const renderComponentByType = ({
         />
       );
 
-    case "text":
-      return <Input placeholder={definition.placeholder} {...field} />;
+    default:
+      return (
+        <Input
+          type={definition.type}
+          placeholder={definition.placeholder}
+          {...field}
+        />
+      );
   }
 };
 

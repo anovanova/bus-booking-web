@@ -9,22 +9,29 @@ import { Form } from "@/components/ui/form";
 import { Field } from "@/components/ui/custom/field";
 
 const formSchema = z.object({
-  username: z.string().min(1, "Username is required").optional(),
-  password: z.string().min(1, "Password is required").optional(),
+  fullname: z.string().min(1, "Username is required").optional(),
+  email: z.string().min(1, "Password is required").optional(),
+  contactNo: z.number().min(1, "Contact Number is required").optional(),
 });
 
 const formDefinitions = [
   {
-    name: "username" as const,
-    label: "Username",
+    name: "fullname" as const,
+    label: "Fullname",
     type: "text",
-    placeholder: "Username",
+    placeholder: "Fullname",
   },
   {
-    name: "password" as const,
-    label: "Password",
-    type: "password",
-    placeholder: "Password",
+    name: "email" as const,
+    label: "Email",
+    type: "email",
+    placeholder: "Email",
+  },
+  {
+    name: "contactNo" as const,
+    label: "Contact No.",
+    type: "number",
+    placeholder: "Contact No.",
   },
 ];
 
@@ -32,8 +39,9 @@ export default function Login() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      username: "",
-      password: "",
+      fullname: "",
+      email: "",
+      contactNo: undefined,
     },
   });
 
@@ -49,9 +57,8 @@ export default function Login() {
 
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onLogin)} className="space-y-8">
-            <div className="flex w-full flex-col gap-2">
+            <div className="flex w-full flex-col gap-4">
               {formDefinitions.map((item, index) => {
-                console.log(item);
                 return (
                   <Field<z.infer<typeof formSchema>>
                     key={index}
@@ -63,14 +70,6 @@ export default function Login() {
             </div>
             <div className="w-full">
               <Button className="w-full">Next</Button>
-              <div className="py-4">
-                <p className="text-neutral-500">
-                  Don&apos;t have an account?{" "}
-                  <Link className="text-sky-600" href="/register">
-                    Register
-                  </Link>
-                </p>
-              </div>
             </div>
           </form>
         </Form>
