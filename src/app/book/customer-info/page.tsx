@@ -10,7 +10,7 @@ import { Field } from "@/components/ui/custom/field";
 const formSchema = z.object({
   fullname: z.string().min(1, "Username is required").optional(),
   email: z.string().min(1, "Password is required").optional(),
-  contactNo: z.number().min(1, "Contact Number is required").optional(),
+  contactNo: z.number().min(2, "Contact Number is required").optional(),
 });
 
 const formDefinitions = [
@@ -29,7 +29,7 @@ const formDefinitions = [
   {
     name: "contactNo" as const,
     label: "Contact No.",
-    type: "number",
+    type: "text",
     placeholder: "Contact No.",
   },
 ];
@@ -40,11 +40,11 @@ export default function Login() {
     defaultValues: {
       fullname: "",
       email: "",
-      contactNo: undefined,
+      contactNo: 0,
     },
   });
 
-  const onLogin = (values: z.infer<typeof formSchema>) => {
+  const onNext = (values: z.infer<typeof formSchema>) => {
     console.log(values);
   };
   return (
@@ -55,7 +55,7 @@ export default function Login() {
         </div>
 
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onLogin)} className="space-y-8">
+          <form onSubmit={form.handleSubmit(onNext)} className="space-y-8">
             <div className="flex w-full flex-col gap-4">
               {formDefinitions.map((item, index) => {
                 return (
