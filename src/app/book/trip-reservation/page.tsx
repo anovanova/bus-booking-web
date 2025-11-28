@@ -10,29 +10,22 @@ import { useContext } from "react";
 import { BookDispatchContext } from "@/app/contexts/bookContext";
 
 const formSchema = z.object({
-  fullname: z.string().min(1, "Username is required").optional(),
-  email: z.string().min(1, "Password is required").optional(),
-  contactNo: z.number().min(2, "Contact Number is required").optional(),
+  tripLocation: z.string().min(1, "Username is required").optional(),
+  reservationDate: z.string().min(1, "Password is required").optional(),
 });
 
 const formDefinitions = [
   {
-    name: "fullname" as const,
-    label: "Fullname",
+    name: "tripLocation" as const,
+    label: "Trip Location",
     type: "text",
-    placeholder: "Fullname",
+    placeholder: "Trip Location",
   },
   {
-    name: "email" as const,
-    label: "Email",
-    type: "email",
-    placeholder: "Email",
-  },
-  {
-    name: "contactNo" as const,
-    label: "Contact No.",
+    name: "reservationDate" as const,
+    label: "Reservation Date",
     type: "text",
-    placeholder: "Contact No.",
+    placeholder: "Reservation Date",
   },
 ];
 
@@ -40,19 +33,12 @@ export default function TripReservationInfo() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      fullname: "",
-      email: "",
-      contactNo: 0,
+      tripLocation: "",
+      reservationDate: "",
     },
   });
 
-  const onNext = (values: z.infer<typeof formSchema>) => {
-    dispatch({
-      type: "added",
-      id: nextId++,
-      text: text,
-    });
-  };
+  const onNext = (values: z.infer<typeof formSchema>) => {};
   return (
     <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
       <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
