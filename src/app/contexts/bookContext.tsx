@@ -1,19 +1,30 @@
 "use client";
 
-import { createContext, useReducer, useContext } from "react";
-export const BookContext = createContext(0);
-export const BookDispatchContext = createContext(0);
+import { createContext, useReducer, useContext, type Dispatch } from "react";
+export const BookContext = createContext(null);
+export const BookDispatchContext = createContext(null);
 export function BookProvider({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  //const [tasks, dispatch] = useReducer(tasksReducer, initialTasks);
+  const [data, dispatch] = useReducer(bookReducer, {});
   return (
-    <BookContext value={1}>
-      <BookDispatchContext value={1}>{children}</BookDispatchContext>
+    <BookContext value={data}>
+      <BookDispatchContext value={dispatch}>{children}</BookDispatchContext>
     </BookContext>
   );
+}
+
+function bookReducer(data, action) {
+  switch (action.type) {
+    case "added": {
+      return { ...data, ...action.data };
+    }
+    default: {
+      throw Error("Unknown action: " + action.type);
+    }
+  }
 }
 
 export function useBookContext() {
