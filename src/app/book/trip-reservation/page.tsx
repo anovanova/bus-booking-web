@@ -6,6 +6,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Form } from "@/components/ui/form";
 import { Field } from "@/components/ui/custom/field";
+import { useContext } from "react";
+import { BookDispatchContext } from "@/app/contexts/bookContext";
 
 const formSchema = z.object({
   fullname: z.string().min(1, "Username is required").optional(),
@@ -45,7 +47,11 @@ export default function TripReservationInfo() {
   });
 
   const onNext = (values: z.infer<typeof formSchema>) => {
-    console.log(values);
+    dispatch({
+      type: "added",
+      id: nextId++,
+      text: text,
+    });
   };
   return (
     <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
