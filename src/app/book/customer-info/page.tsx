@@ -6,11 +6,16 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Form } from "@/components/ui/form";
 import { Field } from "@/components/ui/custom/field";
+import {
+  useBookContext,
+  BookDispatchContext,
+} from "@/app/contexts/bookContext";
+import { useContext } from "react";
 
 const formSchema = z.object({
   fullname: z.string().min(1, "Username is required").optional(),
   email: z.string().min(1, "Password is required").optional(),
-  contactNo: z.number().min(2, "Contact Number is required").optional(),
+  contactNo: z.string().min(2, "Contact Number is required").optional(),
 });
 
 const formDefinitions = [
@@ -34,18 +39,23 @@ const formDefinitions = [
   },
 ];
 
-export default function Login() {
+export default function CustomerInfo() {
+  const dispatch = useContext(BookDispatchContext);
+  const data = useBookContext();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       fullname: "",
       email: "",
-      contactNo: 0,
+      contactNo: "",
     },
   });
 
   const onNext = (values: z.infer<typeof formSchema>) => {
-    console.log(values);
+    dispatch({
+      type: "added",
+      data: { customerInfo: values },
+    });
   };
   return (
     <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
