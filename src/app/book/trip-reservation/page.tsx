@@ -10,8 +10,13 @@ import { useContext } from "react";
 import { BookDispatchContext } from "@/app/contexts/bookContext";
 
 const formSchema = z.object({
-  tripLocation: z.string().min(1, "Username is required").optional(),
-  reservationDate: z.string().min(1, "Password is required").optional(),
+  tripLocation: z.string().min(1, "Trip Location is required").optional(),
+  reservationDate: z.date().min(1, "Reservation Date is required").optional(),
+  roundTrip: z.string().min(1, "Round Trip is required").optional(),
+  roundTripReservationDate: z
+    .date()
+    .min(1, "Reservation Date is required")
+    .optional(),
 });
 
 const formDefinitions = [
@@ -24,7 +29,19 @@ const formDefinitions = [
   {
     name: "reservationDate" as const,
     label: "Reservation Date",
-    type: "text",
+    type: "date",
+    placeholder: "Reservation Date",
+  },
+  {
+    name: "roundTrip" as const,
+    label: "Round Trip?",
+    type: "radio",
+    choices: ["Yes", "No"],
+  },
+  {
+    name: "roundTripReservationDate" as const,
+    label: "Reservation Date",
+    type: "date",
     placeholder: "Reservation Date",
   },
 ];
@@ -34,9 +51,23 @@ export default function TripReservationInfo() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       tripLocation: "",
-      reservationDate: "",
+      reservationDate: new Date(),
+      roundTrip: "No",
+      roundTripReservationDate: new Date(),
     },
   });
+
+  const roundTripValWatch: string = form.watch("roundTrip")!;
+
+  const formArray = () => {
+    if (roundTripValWatch === "No" || form.getValues("roundTrip") === "No") {
+      const newArray = formDefinitions.filter(
+        (item) => item.name !== "roundTripReservationDate"
+      );
+      return newArray;
+    }
+    return formDefinitions;
+  };
 
   const onNext = (values: z.infer<typeof formSchema>) => {};
   return (
@@ -51,7 +82,7 @@ export default function TripReservationInfo() {
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onNext)} className="space-y-8">
             <div className="flex w-full flex-col gap-4">
-              {formDefinitions.map((item, index) => {
+              {formArray().map((item, index) => {
                 return (
                   <Field<z.infer<typeof formSchema>>
                     key={index}
